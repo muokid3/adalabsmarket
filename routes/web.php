@@ -26,3 +26,5 @@ Route::get('/','HomeController@index');
 
 Route::get('dashboard','HomeController@dashboard')->middleware('perm:1');
 
+Route::get('category/{category_id}','ProductsController@category_products')->middleware('perm:1');
+

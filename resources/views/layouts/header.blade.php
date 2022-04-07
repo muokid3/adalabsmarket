@@ -65,8 +65,14 @@
                         </li>
                     </ul>
                     <div class="header__cart__price">
-                        <a href="{{url('login')}}"><i class="fa fa-user"></i> Login</a>
-                        <a href="{{url('register')}}"><i class="fa fa-phone"></i> Register</a>
+                        @guest()
+                            <a href="{{url('login')}}"><i class="fa fa-user"></i> Login</a>
+                            <a href="{{url('register')}}"><i class="fa fa-phone"></i> Register</a>
+                        @endguest
+
+                        @auth()
+                            {{ auth()->user()->name }}
+                        @endauth
                     </div>
                 </div>
             </div>

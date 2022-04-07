@@ -32,6 +32,8 @@
                         </div>
                         <form action="{{ route('register') }}" method="POST" class="signin-form">
                             @csrf
+
+                            <input type="hidden" name="user_group" value="3">
                             <div class="form-group mt-3">
                                 <input type="text" name="name" class="form-control @error('name') is-invalid @enderror" required>
                                 <label class="form-control-placeholder" for="name">Name</label>

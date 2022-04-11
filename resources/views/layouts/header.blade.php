@@ -39,10 +39,10 @@
             <div class="col-lg-6">
                 <nav class="header__menu">
                     <ul>
-                        <li class="active"><a href="{{url('/')}}">Home</a></li>
-                        <li><a href="{{url('shop')}}">Shop</a></li>
-                        <li><a href="{{url('blog')}}">Blog</a></li>
-                        <li><a href="{{url('contact')}}">Contact</a></li>
+                        <li class=" {{ \Request::is('/') ? 'active' : ''}}"><a href="{{url('/')}}">Home</a></li>
+                        <li class=" {{ \Request::is('shop') ? 'active' : ''}}"><a href="{{url('shop')}}">Shop</a></li>
+                        <li class=" {{ \Request::is('blog') ? 'active' : ''}}"><a href="{{url('blog')}}">Blog</a></li>
+                        <li class=" {{ \Request::is('contact') ? 'active' : ''}}"><a href="{{url('contact')}}">Contact</a></li>
                     </ul>
                 </nav>
             </div>

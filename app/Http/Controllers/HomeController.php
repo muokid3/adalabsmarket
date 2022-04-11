@@ -25,8 +25,10 @@ class HomeController extends Controller
     public function index()
     {
         $featuredProducts = Product::where('is_featured', true)->get();
+        $latestProducts = Product::orderBy('id', 'desc')->limit(3)->get();
         return view('home')->with([
-           'featuredProducts' => $featuredProducts
+           'featuredProducts' => $featuredProducts,
+           'latestProducts' => $latestProducts
         ]);
     }
 }

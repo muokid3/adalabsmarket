@@ -28,8 +28,11 @@ Route::get('dashboard','HomeController@dashboard')->middleware('perm:1');
 
 Route::get('category/{category_id}','ProductsController@category_products');
 
+Route::get('shop','ProductsController@all_products');
+
 Route::group(['middleware'=>['auth']], function (){
     Route::get('cart','CartController@cart');
+    Route::get('cart/add/{product_id}','CartController@add_to_cart');
 
 });
 

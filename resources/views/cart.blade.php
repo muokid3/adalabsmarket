@@ -37,24 +37,24 @@
                             <tbody>
 
                             @if(!is_null($cart))
-                                @foreach($cart->items() as $cartItem)
+                                @foreach($cart->items as $cartItem)
                                     <tr>
                                         <td class="shoping__cart__item">
-                                            <img src="img/cart/xcart-1.jpg.pagespeed.ic.HCREN0EpoU.jpg" alt="">
-                                            <h5>Vegetable’s Package</h5>
+                                            <img src="{{$cartItem->product->image_url}}" width="100" alt="">
+                                            <h5>{{$cartItem->product->product_name}}</h5>
                                         </td>
                                         <td class="shoping__cart__price">
-                                            $55.00
+                                            Ksh. {{number_format($cartItem->product->price)}}
                                         </td>
                                         <td class="shoping__cart__quantity">
                                             <div class="quantity">
                                                 <div class="pro-qty">
-                                                    <input type="text" value="1">
+                                                    <input type="text" value="{{$cartItem->quantity}}">
                                                 </div>
                                             </div>
                                         </td>
                                         <td class="shoping__cart__total">
-                                            $110.00
+                                            Ksh. {{number_format($cartItem->product->price * $cartItem->quantity)}}
                                         </td>
                                         <td class="shoping__cart__item__close">
                                             <span class="icon_close"></span>
@@ -72,7 +72,7 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="shoping__cart__btns">
-                        <a href="{{url('/')}}" class="primary-btn cart-btn">CONTINUE SHOPPING</a>
+                        <a href="{{url('/shop')}}" class="primary-btn cart-btn">CONTINUE SHOPPING</a>
 
                     </div>
                 </div>
@@ -91,8 +91,10 @@
                     <div class="shoping__checkout">
                         <h5>Cart Total</h5>
                         <ul>
-                            <li>Subtotal <span>$454.98</span></li>
-                            <li>Total <span>$454.98</span></li>
+                            @if(!is_null($cart))
+{{--                                <li>Subtotal <span>Ksh. {{}}</span></li>--}}
+                                <li>Total <span>Ksh. {{number_format($cart->items->sum('total_amount'))}}</span></li>
+                            @endif
                         </ul>
                         <a href="#" class="primary-btn">PROCEED TO CHECKOUT</a>
                     </div>

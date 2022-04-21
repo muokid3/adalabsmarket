@@ -20,11 +20,12 @@ use Illuminate\Support\Facades\Route;
 
 Auth::routes();
 
-//Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/logout', 'Auth\LoginController@logout');
+
+
 
 Route::get('/','HomeController@index');
 
-Route::get('dashboard','HomeController@dashboard')->middleware('perm:1');
 
 Route::get('category/{category_id}','ProductsController@category_products');
 
@@ -33,6 +34,9 @@ Route::get('shop','ProductsController@all_products');
 Route::group(['middleware'=>['auth']], function (){
     Route::get('cart','CartController@cart');
     Route::get('cart/add/{product_id}','CartController@add_to_cart');
+
+    Route::get('dashboard','DashboardController@dashboard');//->middleware('perm:1');
+
 
 });
 

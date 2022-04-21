@@ -72,7 +72,9 @@
 
                         @auth()
                             {{ auth()->user()->name }}
-                        @endauth
+                                <a href="{{url('logout')}}"><i class="fa fa-angle-right"></i> Logout</a>
+
+                            @endauth
                     </div>
                 </div>
             </div>

@@ -67,13 +67,13 @@
                 </a>
                 <div class="collapse" id="pagesExamples">
                     <ul class="nav">
-                        <li class="nav-item {{ \Request::is('admin/categories') ? 'active child' : '' }}">
+                        <li class="nav-item {{ \Request::is('admin/categories') ? 'active' : '' }}">
                             <a class="nav-link" href="{{url('admin/categories')}}">
                                 <span class="sidebar-mini"> C </span>
                                 <span class="sidebar-normal"> Categories </span>
                             </a>
                         </li>
-                        <li class="nav-item {{ \Request::is('admin/products') ? 'active child' : '' }} ">
+                        <li class="nav-item {{ \Request::is('admin/products') ? 'active' : '' }} ">
                             <a class="nav-link" href="{{url('admin/products')}}">
                                 <span class="sidebar-mini"> P </span>
                                 <span class="sidebar-normal"> Products </span>

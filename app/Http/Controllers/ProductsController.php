@@ -25,8 +25,6 @@ class ProductsController extends Controller
             'categoryName' => $categoryName
         ]);
     }
-
-
     public function all_products(){
 
         $products = Product::orderBy('id','desc')->paginate(12);
@@ -43,4 +41,68 @@ class ProductsController extends Controller
             'featuredProducts' => $featuredProducts,
         ]);
     }
+
+    public function categories(){
+
+        $categories = Category::orderBy('id','desc')->get();
+
+        return view('admin/categories')->with([
+            'categories' => $categories,
+        ]);
+    }
+
+    public function add_category(Request $request)
+    {
+
+        $this->validate($request, [
+            'category_name' => 'required|unique:categories',
+        ]);
+
+        $category = new Category();
+        $category->category_name = $request->category_name;
+        $category->save();
+
+        request()->session()->flash('success', 'Category has been created successfully!');
+
+        return redirect()->back();
+    }
+
+    public function delete_category(Request $request)
+    {
+
+        $this->validate($request, [
+            'category_id' => 'required|exists:categories,id',
+        ]);
+
+        $category = Category::find($request->category_id);
+        $category->delete();
+
+        request()->session()->flash('success', 'Category has been deleted successfully!');
+
+        return redirect()->back();
+    }
+
+
+    public function edit_category($id)
+    {
+        $category = Category::find($id);
+        return $category;
+    }
+
+    public function update_category(Request $request)
+    {
+        $data = request()->validate([
+            'category_name' => 'required|unique:categories,category_name,'.$request->id,
+            'id' => 'required',
+        ]);
+
+        Category::where('id',$request->id)->update($data);
+
+        request()->session()->flash('success', 'Category has been updated.');
+
+        return redirect()->back();
+        //return redirect('admin/categories');
+    }
+
+
 }

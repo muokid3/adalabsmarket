@@ -38,5 +38,15 @@ Route::group(['middleware'=>['auth']], function (){
     Route::get('dashboard','DashboardController@dashboard');//->middleware('perm:1');
 
 
+    Route::get('admin/categories','ProductsController@categories');//->middleware('perm:1');
+    Route::post('admin/categories','ProductsController@add_category');//->middleware('perm:1');
+    Route::post('admin/categories/delete','ProductsController@delete_category');//->middleware('perm:1');
+
+    Route::get('admin/category/edit/{id}','ProductsController@edit_category')->name('edit-category');
+    Route::post('admin/category/update','ProductsController@update_category');//->middleware('perm:1');
+
+
+
+
 });
 

@@ -41,9 +41,15 @@ Route::group(['middleware'=>['auth']], function (){
     Route::get('admin/categories','ProductsController@categories');//->middleware('perm:1');
     Route::post('admin/categories','ProductsController@add_category');//->middleware('perm:1');
     Route::post('admin/categories/delete','ProductsController@delete_category');//->middleware('perm:1');
-
     Route::get('admin/category/edit/{id}','ProductsController@edit_category')->name('edit-category');
     Route::post('admin/category/update','ProductsController@update_category');//->middleware('perm:1');
+
+
+    Route::get('admin/products','ProductsController@products');//->middleware('perm:1');
+    Route::post('admin/products','ProductsController@add_product');//->middleware('perm:1');
+    Route::post('admin/products/delete','ProductsController@delete_product');//->middleware('perm:1');
+    Route::get('admin/product/edit/{id}','ProductsController@edit_product')->name('edit-product');
+    Route::post('admin/product/update','ProductsController@update_product');//->middleware('perm:1');
 
 
 

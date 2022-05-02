@@ -35,7 +35,7 @@ Route::group(['middleware'=>['auth']], function (){
     Route::get('cart','CartController@cart');
     Route::get('cart/add/{product_id}','CartController@add_to_cart');
 
-    Route::get('dashboard','DashboardController@dashboard');//->middleware('perm:1');
+    Route::get('dashboard','DashboardController@dashboard')->middleware('perm:1');
 
 
     Route::get('admin/categories','ProductsController@categories');//->middleware('perm:1');
@@ -50,6 +50,18 @@ Route::group(['middleware'=>['auth']], function (){
     Route::post('admin/products/delete','ProductsController@delete_product');//->middleware('perm:1');
     Route::get('admin/product/edit/{id}','ProductsController@edit_product')->name('edit-product');
     Route::post('admin/product/update','ProductsController@update_product');//->middleware('perm:1');
+
+
+    Route::get('admin/user_groups', 'UserController@user_groups')->middleware('perm:4');
+    Route::post('admin/user_groups', 'UserController@new_user_group')->middleware('perm:4');
+    Route::get('admin/user_groups/{_id}', 'UserController@get_group_details')->middleware('perm:4');
+    Route::post('admin/user_groups/update', 'UserController@update_group_details')->middleware('perm:4');
+    Route::post('admin/user_groups/delete', 'UserController@delete_group')->middleware('perm:4');
+
+    Route::get('admin/users/groups/{id}','UserController@user_group_details')->middleware('perm:4');
+    Route::post('admin/users/groups/permissions/add','UserController@add_group_permission')->middleware('perm:4');
+    Route::get('admin/users/groups/permissions/delete/{id}','UserController@delete_group_permission')->middleware('perm:4');
+
 
 
 

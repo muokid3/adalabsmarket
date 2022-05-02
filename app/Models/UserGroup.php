@@ -26,4 +26,8 @@ class UserGroup extends Model
 
         return count($available) > 0;
     }
+
+    public function users() {
+        return $this->hasMany(User::class,'user_group');
+    }
 }

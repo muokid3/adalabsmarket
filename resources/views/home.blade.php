@@ -75,7 +75,7 @@
                 @foreach($featuredProducts as $featuredProduct)
                     <div class="col-lg-3 col-md-4 col-sm-6 mix oranges fresh-meat">
                         <div class="featured__item">
-                            <div class="featured__item__pic set-bg" data-setbg="{{$featuredProduct->image_url}}">
+                            <div class="featured__item__pic set-bg" data-setbg="{{\Illuminate\Support\Facades\Storage::url($featuredProduct->image_url)}}">
                                 <ul class="featured__item__pic__hover">
                                     <li><a href="#"><i class="fa fa-heart"></i></a></li>
                                     <li><a href="#"><i class="fa fa-retweet"></i></a></li>
@@ -123,7 +123,7 @@
                                 @foreach($latestProducts as $latestProduct)
                                     <a href="#" class="latest-product__item">
                                         <div class="latest-product__item__pic">
-                                            <img src="{{$latestProduct->image_url}}" alt="">
+                                            <img src="{{\Illuminate\Support\Facades\Storage::url($latestProduct->image_url)}}" alt="">
                                         </div>
                                         <div class="latest-product__item__text">
                                             <h6>{{$latestProduct->product_name}}</h6>

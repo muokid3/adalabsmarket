@@ -44,12 +44,14 @@
             </div>
         </div>
         <ul class="nav">
-            <li class="nav-item {{ \Request::is('dashboard') ? 'active' : '' }} ">
-                <a class="nav-link" href="{{url('dashboard')}}">
-                    <i class="material-icons">dashboard</i>
-                    <p> Dashboard </p>
-                </a>
-            </li>
+            @if(auth()->user()->role->has_perm([1]))
+                <li class="nav-item {{ \Request::is('dashboard') ? 'active' : '' }} ">
+                    <a class="nav-link" href="{{url('dashboard')}}">
+                        <i class="material-icons">dashboard</i>
+                        <p> Dashboard </p>
+                    </a>
+                </li>
+            @endif
 
             <li class="nav-item {{ \Request::is('admin/blog') ? 'active' : '' }} ">
                 <a class="nav-link" href="{{url('admin/blog')}}">
@@ -83,31 +85,32 @@
                 </div>
             </li>
 
-
-            <li class="nav-item ">
-                <a class="nav-link" data-toggle="collapse" href="#users">
-                    <i class="material-icons">image</i>
-                    <p> User Management
-                        <b class="caret"></b>
-                    </p>
-                </a>
-                <div class="collapse" id="users">
-                    <ul class="nav">
-                        <li class="nav-item {{ \Request::is('admin/user_groups') ? 'active child' : '' }} ">
-                            <a class="nav-link" href="{{url('admin/user_groups')}}">
-                                <span class="sidebar-mini"> UG </span>
-                                <span class="sidebar-normal"> User Groups </span>
-                            </a>
-                        </li>
-                        <li class="nav-item {{ \Request::is('admin/users') ? 'active child' : '' }}  ">
-                            <a class="nav-link" href="{{url('admin/users')}}">
-                                <span class="sidebar-mini"> AU </span>
-                                <span class="sidebar-normal"> All Users </span>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-            </li>
+            @if(auth()->user()->role->has_perm([4]))
+                <li class="nav-item ">
+                    <a class="nav-link" data-toggle="collapse" href="#users">
+                        <i class="material-icons">image</i>
+                        <p> User Management
+                            <b class="caret"></b>
+                        </p>
+                    </a>
+                    <div class="collapse" id="users">
+                        <ul class="nav">
+                            <li class="nav-item {{ \Request::is('admin/user_groups') ? 'active child' : '' }} ">
+                                <a class="nav-link" href="{{url('admin/user_groups')}}">
+                                    <span class="sidebar-mini"> UG </span>
+                                    <span class="sidebar-normal"> User Groups </span>
+                                </a>
+                            </li>
+                            <li class="nav-item {{ \Request::is('admin/users') ? 'active child' : '' }}  ">
+                                <a class="nav-link" href="{{url('admin/users')}}">
+                                    <span class="sidebar-mini"> AU </span>
+                                    <span class="sidebar-normal"> All Users </span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+            @endif
 
         </ul>
     </div>

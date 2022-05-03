@@ -1,42 +1,9 @@
-@extends('layouts.app')
-@section('title', 'All Users')
+@extends('layouts.dash')
 @push('js')
     <script>
 
         $(function() {
-            // server side - lazy loading
-            $('#users-dt').DataTable({
-                processing: true, // loading icon
-                serverSide: true, // this means the datatable is no longer client side
-                ajax: '{{ route('users-dt') }}', // the route to be called via ajax
-                columns: [ // datatable columns
-                    {data: 'id', name: 'id'},
-                    {data: 'name', name: 'name'},
-                    {data: 'role', name: 'role'},
-                    {data: 'email', name: 'email'},
-                    {data: 'actions', name: 'actions'},
-                ],
-                /*columnDefs: [
-                    {searchable: false, targets: [5]},
-                    {orderable: false, targets: [5]}
-                ],*/
-                "pagingType": "full_numbers",
-                "lengthMenu": [
-                    [10, 25, 50, -1],
-                    [10, 25, 50, "All"]
-                ],
-                responsive: true,
-                language: {
-                    search: "_INPUT_",
-                    searchPlaceholder: "Search Users",
-                },
-                "order": [[0, "desc"]]
-            });
-
-            // live search
-
             var _ModalTitle = $('#user-modal-title'),
-                _SpoofInput = $('#user-spoof-input'),
                 _Form = $('#user-form');
 
             // edit   product
@@ -52,7 +19,6 @@
                         dataType: 'json',
                         beforeSend: function() {
                             _ModalTitle.text('Edit');
-                            _SpoofInput.removeAttr('disabled');
                         },
                         success: function(data) {
                             console.log(data);
@@ -63,9 +29,9 @@
                             $('#id').val(data['id']);
 
                             // set the update url
-                            var action =  _Form .attr('action');
+                            var action =  '/admin/users/update';
                             // action = action + '/' + season_id;
-                            console.log(action);
+                            // console.log(action);
                             _Form .attr('action', action);
 
                             // open the modal
@@ -74,6 +40,24 @@
                     });
                 }
             });
+
+            $(document).on('click', '.add-user-btn', function() {
+                var _Form = $('#user-form');
+
+                _ModalTitle.text('Add');
+
+                $('#id').val('');
+                $('#name').val('');
+                $('#email').val('');
+                $("#user_group").val('').change();
+
+                // set the add url
+                var action = '/admin/users/create';
+                //console.log(action);
+                _Form .attr('action', action);
+                $('#user-modal').modal('show');
+            });
+
 
 
 
@@ -94,7 +78,7 @@
                     </div>
                     <div class="card-body">
                         <div class="toolbar">
-                            <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#user-modal">
+                            <button class="btn btn-primary btn-sm add-user-btn">
                                 <i class="fa fa-plus"></i> Add New User
                             </button>
                         </div>
@@ -104,26 +88,48 @@
                             <button class="close" data-dismiss="alert">&times;</button>
                             <strong>Success!</strong><span id="successData"></span>
                         </div>
-                        <div class="material-datatables">
-                            <table id="users-dt" class="table table-striped table-no-bordered table-hover" cellspacing="0" width="100%" style="width:100%">
+                        <div class="table-responsive">
+                            <table class="table table-striped table-no-bordered table-hover" cellspacing="0" width="100%" style="width:100%">
                                 <thead>
                                     <tr>
-                                        <th>Id</th>
+                                        <th>ID</th>
                                         <th>Name</th>
                                         <th>Role</th>
                                         <th>Email</th>
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
-                                <tfoot>
+                                <tbody>
+                                @foreach($users as $user)
                                     <tr>
-                                        <th>Id</th>
-                                        <th>Name</th>
-                                        <th>Role</th>
-                                        <th>Email</th>
-                                        <th>Actions</th>
+                                        <td>
+                                            {{$user->id}}
+                                        </td>
+                                        <td>
+                                            {{$user->name}}
+                                        </td>
+                                        <td>
+                                            {{optional($user->role)->name}}
+                                        </td>
+                                        <td>
+                                            {{$user->email}}
+                                        </td>
+
+                                        <td>
+                                            <button class="btn btn-info btn-sm edit-user-btn"
+                                                    source="{{route('edit-user' ,   $user->id)}}"
+                                                    item-id="{{$user->id}}">Edit</button>
+
+                                            <form action="{{url('admin/users/delete')}}" style="display: inline;" method="POST"
+                                                  class="del_user_form">
+                                                @csrf
+                                                <input type="hidden" name="user_id" value="{{$user->id}}">
+                                                <button class="btn btn-danger btn-sm">Delete</button>
+                                            </form>
+                                        </td>
                                     </tr>
-                                </tfoot>
+                                @endforeach
+                                </tbody>
                             </table>
                         </div>
                     </div>
@@ -145,16 +151,14 @@
                     <h4 class="modal-title" id="myModalLabel"> <span id="user-modal-title">Add </span> New User</h4>
                 </div>
                 <div class="modal-body" >
-                    <form id="userform" action="{{ url('enroll') }}" method="post" id="user-form" enctype="multipart/form-data">
-                        {{ csrf_field() }}
-                        {{--spoofing--}}
-                        <input type="hidden" name="_method" id="user-spoof-input" value="PUT" disabled/>
+                    <form action="{{ url('admin/users/create') }}" method="post" id="user-form" enctype="multipart/form-data">
+                       @csrf
 
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label class="control-label" for="name">Name</label>
-                                    <input type="text" value="{{ $edit ? $selected_user->name : old('name') }}" class="form-control" id="name" name="name" required />
+                                    <input type="text" class="form-control" id="name" name="name" required />
                                 </div>
                             </div>
 
@@ -163,10 +167,10 @@
                                     {{--<label class="control-label" for="user_role" style="line-height: 6px;">User Role</label>--}}
 
                                         <div class="dropdown bootstrap-select show-tick">
-                                            <select class="selectpicker" data-style="select-with-transition" title="Choose User Group" data-size="7" tabindex="-98"
+                                            <select class="selectpicker" data-style="select-with-transition" title="Choose User Group" tabindex="-98"
                                                     name="user_group" id="user_group" required>
-                                                @foreach( $user_roles as $user_role)
-                                                    <option value="{{ $user_role->id  }}">{{ $user_role->name }}</option>
+                                                @foreach( $userGroups as $userGroup)
+                                                    <option value="{{ $userGroup->id  }}">{{ $userGroup->name }}</option>
                                                 @endforeach
                                             </select>
 
@@ -181,7 +185,7 @@
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label class="control-label" for="email">Email</label>
-                                    <input type="email" value="{{$edit ? $selected_user->email :  old('email') }}" class="form-control pb-0 mt-2" name="email" id="email" required/>
+                                    <input type="email" class="form-control pb-0 mt-2" name="email" id="email" required/>
                                 </div>
                             </div>
 

@@ -63,6 +63,13 @@ Route::group(['middleware'=>['auth']], function (){
     Route::get('admin/users/groups/permissions/delete/{id}','UserController@delete_group_permission')->middleware('perm:4');
 
 
+    Route::get('admin/users', 'UserController@users')->middleware('perm:4');
+    Route::post('admin/users/create', 'UserController@register_user')->middleware('perm:4');
+    Route::get('admin/ajax/users', 'UserController@usersDT')->name('users-dt')->middleware('perm:4');
+
+    Route::get('admin/users/{_id}', 'UserController@edit_user')->name('edit-user')->middleware('perm:4');
+    Route::post('admin/users/update','UserController@update_user')->middleware('perm:4');
+    Route::post('admin/users/delete','UserController@delete_user')->middleware('perm:4');
 
 
 
